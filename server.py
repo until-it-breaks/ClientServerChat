@@ -10,6 +10,7 @@ BUFFER_SIZE = 1024
 ADDRESS = (HOST, PORT)
 ENCODING = "utf8"
 
+#AF_INET refers to the ipv4 protocol, SOCK_STREAM refers to TCP
 SERVER = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 SERVER.bind(ADDRESS)
 
