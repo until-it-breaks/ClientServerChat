@@ -13,6 +13,7 @@ ENCODING = "utf8"
 SERVER = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 SERVER.bind(ADDRESS)
 
+#waits for incoming connections and starts a handling thread for each one
 def accept_incoming_connections():
     while True:
         client, client_address = SERVER.accept()
@@ -29,6 +30,7 @@ def handle_client(client):
     broadcast(bytes(message, ENCODING))
     clients[client] = name
 
+    #waits for inputs from the client bound to this thread and broadcasts it
     while True:
         message = client.recv(BUFFER_SIZE)
         if message != bytes("{quit}", ENCODING):
@@ -43,3 +45,10 @@ def handle_client(client):
 def broadcast(msg, prefix=""):
     for client in clients:
         client.send(bytes(prefix, ENCODING) + msg)
+
+SERVER.listen(5)
+print("Waiting for connections")
+ACCEPT_THREAD = threading.Thread(target=accept_incoming_connections)
+ACCEPT_THREAD.start()
+ACCEPT_THREAD.join() #wait until the end of the thread before proceeding
+SERVER.close()
