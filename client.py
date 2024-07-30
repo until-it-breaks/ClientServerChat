@@ -10,8 +10,7 @@ def receive():
         try:
             message = client_socket.recv(BUFFER_SIZE).decode(ENCODING)
             message_list.insert(tkt.END, message)
-        except OSError as e:
-            print("Failed to receive incoming message: {}".format(e))
+        except OSError:
             break
 
 def send(event=None):
@@ -22,8 +21,8 @@ def send(event=None):
         if message == "{quit}":
             client_socket.close()
             window.destroy()
-    except OSError as e:
-        print("Failed to send message {}".format(e))
+    except OSError:
+        pass
 
 def on_closing(event=None):
     my_message.set("{quit}")
